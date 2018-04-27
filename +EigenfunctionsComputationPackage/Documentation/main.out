@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{License terms}{}% 1
+\BOOKMARK [1][-]{section.2}{Objective}{}% 2
+\BOOKMARK [1][-]{section.3}{Technical requirements}{}% 3
+\BOOKMARK [1][-]{section.4}{Installation}{}% 4
+\BOOKMARK [1][-]{section.5}{Detailed description of the input parameters}{}% 5
+\BOOKMARK [2][-]{subsection.5.1}{Specification of the filepaths}{section.5}% 6
+\BOOKMARK [2][-]{subsection.5.2}{Specification of the input domain}{section.5}% 7
+\BOOKMARK [2][-]{subsection.5.3}{Specification of the measure}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.4}{Specification of the kernel}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.5}{Specification of the accuracy of the decomposition}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.6}{Specification of the outputs}{section.5}% 11
+\BOOKMARK [1][-]{section.6}{Detailed description of the outputs}{}% 12
+\BOOKMARK [1][-]{section.7}{Example of usage}{}% 13
+\BOOKMARK [1][-]{section.8}{Contacts}{}% 14

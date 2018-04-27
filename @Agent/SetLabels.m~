@@ -1,0 +1,18 @@
+function SetLabels( tNode, iLabel )
+	%
+	tNode.iLabel				= iLabel;
+	%
+	% consensus kind
+	tNode.GOSSIP					= 1;
+	tNode.ACCELERATED_GOSSIP		= 2;
+	tNode.HADJICOSTIS				= 3;
+	tNode.MAX						= 4;
+	tNode.SYNCHRONOUS_METROPOLIS	= 5;
+	%
+	tNode.DETERMINISTIC				= 11;
+	tNode.GAUSSIAN					= 12;
+	tNode.UNIFORM					= 13;
+	tNode.BERNOULLI_MULTI_BITS		= 14;
+	tNode.BERNOULLI_SINGLE_BITS		= 15;
+	%
+end %

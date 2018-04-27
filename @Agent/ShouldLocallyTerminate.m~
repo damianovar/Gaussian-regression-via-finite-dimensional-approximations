@@ -1,0 +1,45 @@
+function bShouldTerminate = ShouldLocallyTerminate( tNode )
+	%
+	% a priori time horizon
+	iTimeHorizon = 10;
+	%
+	%
+	% exit if the node has communicated less time than the original apriori
+	% horizon
+	if( tNode.iLocalUpdatesCounter < iTimeHorizon )
+		%
+		bShouldTerminate = false;
+		return;
+		%
+	else%
+		%
+		% algorithm: check if the X has changed in time
+		for iTime = 1:iTimeHorizon;
+			%
+			if	(														...
+					norm												...
+					(													...
+							tNode.aafX(:, end)							...
+						-	tNode.aafX(:, end - iTime + 1)				...
+					)													...
+					/													...
+					norm												...
+					(													...
+							tNode.aafX(:, end)							...
+					)													...
+					>													...
+					0.00001												...
+				)
+				%
+				bShouldTerminate = false;
+				return;
+				%
+			end;%
+			%
+		end;%
+		%
+		bShouldTerminate = true;
+		%
+	end;%
+	%
+end %

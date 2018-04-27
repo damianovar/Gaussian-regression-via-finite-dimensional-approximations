@@ -1,0 +1,355 @@
+\def\VERSION		{1.0}	% created the main document
+
+% ~~~~~~~~~~~~ %
+% tab size = 4 %
+% ~~~~~~~~~~~~ %
+
+\documentclass[a4paper, 10pt, twoside]{article} % ~~~~~~~~~~~~~~~~~ %
+%																	%
+\usepackage[english]{babel}											%
+\usepackage{type1cm}												%
+\usepackage{type1ec}												%
+\usepackage[T1]{fontenc}											%
+\usepackage{dsfont}													%
+\usepackage{booktabs}												%
+\usepackage{array}													%
+\usepackage{enumerate}												%
+\usepackage[table]{xcolor}											%
+%\usepackage{makeidx}												%
+\usepackage{fancyhdr}												%
+\usepackage{lastpage}												%
+\usepackage{multicol}												%
+\usepackage{amsmath, amssymb, amsfonts}								%
+\usepackage[	left	= 2.5cm, right	= 2.5cm,					%
+				bottom	= 2.5cm, top	= 2.5cm,					%
+				bindingoffset	= 1cm]{geometry}					%
+\usepackage{framed}													%
+\usepackage[amsmath,thmmarks,framed,hyperref]{ntheorem}				%
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}						%
+\usepackage[colorlinks,hyperindex,pagebackref=true]{hyperref}		%
+\usepackage{eso-pic}												%
+\usepackage[switch, pagewise, mathlines]{lineno}					%
+\usepackage[color=white!90!black, textwidth=3cm]{todonotes}			%
+\usepackage{algorithm}												%
+\usepackage[noend]{algpseudocode}									%
+%
+\pagestyle{fancy}
+%
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+%
+% delete current setting for header and footer
+\fancyhf{}
+%
+\fancyhead[LO]	{\bfseries \nouppercase \leftmark}% \TITLE}
+\fancyhead[CO]	{}
+\fancyhead[RO]	{\bfseries \thepage}% \ on \pageref{LastPage} - \today}
+\fancyhead[LE]	{\bfseries \thepage}% \ on \pageref{LastPage} - \today}
+\fancyhead[CE]	{}
+\fancyhead[RE]	{\bfseries \nouppercase \rightmark}% \TITLE}
+\fancyfoot[O]	{}
+\fancyfoot[E]	{}
+%
+\renewcommand	{\headrulewidth}	{0.5pt}	% top rule width
+\renewcommand	{\footrulewidth}	{0.0pt}	% bottom rule width
+\addtolength	{\headheight}		{2.5pt}	% make space for the rule
+%
+\fancypagestyle{plain}
+{
+	\fancyhead{}						% get rid of headers on plain pages
+	\renewcommand{\headrulewidth}{0pt}	% and the line
+}
+%
+\def\TITLE			{Eigendecomposition of Mercer Kernels using Matlab\textregistered}
+\def\AUTHOR			{Automatic Control Group}
+\def\INSTITUTE		{Department of Information Engineering - University of Padova}
+\def\SUBJECT		{Subject of the work}
+\def\KEYWORDS		{List of Keywords}
+\def\CREATOR		{\INSTITUTE}
+%
+\ifpdf \hypersetup
+{
+	pdftitle		= {\TITLE},
+	pdfauthor		= {\AUTHOR},
+	pdfsubject		= {\SUBJECT},
+	pdfcreator		= {\CREATOR},
+	pdfproducer		= {\INSTITUTE},
+	pdfkeywords		= {\KEYWORDS},
+	%
+%	pdfpagemode		= FullScreen,	% full screen when opening the document
+	pdfstartview	= Fit,			% how to open the document (Fit FitH FitV FitR FitB)
+	pdfstartpage	= 1,			% page where to open the document
+	pdfnewwindow	= true,			% open the document in a new window?
+	pdfcenterwindow	= true,			%
+	pdftoolbar		= false,		% do you want to show Acrobat's toolbar?
+	pdfmenubar		= false,		% do you want to show Acrobat's menu?
+	%
+	% colori degli hyperlinks
+	colorlinks		= false,			% false: boxed    true: colored
+	linkbordercolor	= 0.8 0.8 0.8,		% (RGB) normal links
+	citebordercolor	= 0.8 0.8 0.8,		% (RGB) citations links
+	filebordercolor	= 0.8 0.8 0.8,		% (RGB) files links
+	urlbordercolor	= 0.8 0.8 0.8,		% (RGB) URLs links
+}
+%
+\urlstyle{same}							% URLs style [same | commented]
+%
+\fi
+%
+\title	{\TITLE}
+\author
+{
+	\AUTHOR \\ \INSTITUTE
+}
+%
+\date	{\today\ $\quad$ --- $\quad$ ver.\ \VERSION}
+%
+\raggedbottom
+\linespread{1.1}
+\headheight = 15 pt
+%
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ %
+
+
+\begin{document}
+
+\setpagewiselinenumbers
+\modulolinenumbers[1]
+\linenumbers
+
+\maketitle						% print the standard LaTeX title
+\tableofcontents				% print the table of contents
+
+
+\section{License terms}
+\label{sec:license terms}
+
+This package is licensed under the Creative Commons BY 4.0 License. Please consult \texttt{http://creativecommons.org/licenses/by/4.0/} for further details.
+
+
+\section{Objective}
+\label{sec:objective}
+
+The objective is to compute eigenfunctions and eigenvalues of a generic Mercer Kernel $K$, where
+%
+\begin{equation}
+	%
+	K : \mathcal{X} \times \mathcal{X} \mapsto \mathbb{R}
+	%
+\end{equation}
+%
+is symmetric, continuous and non-negative definite.
+
+This package returns:
+%
+\begin{description}
+	\item[either] \texttt{.mat} files containing in opportune structures the eigenfunctions as look up tables (i.e., containing matrices that represent discretized approximations of the desired eigenfunctions). Note that this package can return this type of results only when the domain $\mathcal{X}$ is intervals in $\mathbb{R}$ and $\mathbb{R}^2$. Higher dimensionalities are not yet fully supported;
+	\item[or] objects that can be used to evaluate the eigenfunctions using the Nystr{\"o}m method.
+\end{description}
+
+
+\section{Technical requirements}
+\label{sec:technical_requirements}
+
+Any Matlab\textregistered distribution supporting classes should work, and no additional packages are required. Please use the contacts in Section~\ref{sec:contacts} in case of difficulties.
+
+We assume the reader to be familiar with Matlab\textregistered's coding rules.
+
+\section{Installation}
+\label{sec:installation}
+
+The source code is managed in classes scoped within a package. Please consult Section~\ref{sec:input_parameters} to check the necessary \texttt{addpath} operations to be performed.
+
+
+\section{Detailed description of the input parameters}
+\label{sec:input_parameters}
+
+All the parameters that users need to modify are located in \texttt{./MainSoftware/LoadParameters.m}. No modifications are required in other files. In \texttt{./MainSoftware/LoadParameters.m} you will find several parameters, divided by scope. Please refer to Section~\ref{sec:example_of_usage} for examples.
+
+
+% ---------------------------------------------------------------------
+\subsection{Specification of the filepaths}
+\label{ssec:filepaths}
+
+\begin{itemize}
+	%
+	\item \texttt{addpath} \emph{path of the package (note that} \texttt{+EigendecompositionPackage} \emph{is excluded)}
+	%
+	\item \texttt{tParameters.strResultingMatFilesDirectory =} \emph{directory where the results will be stored as \texttt{.mat} files}
+	%
+	\item \texttt{tParameters.strResultingTxtFilesDirectory =} \emph{directory where the results will be stored as \texttt{.txt} files}
+	%
+\end{itemize}
+
+
+% ---------------------------------------------------------------------
+\subsection{Specification of the input domain}
+\label{ssec:input_domain}
+
+For the case where one desires to compute the eigenfunctions as look up tables, then to specify whether to use single dimensional or bi-dimensional domains, set the following: 
+%
+\begin{itemize}
+	%
+	\item \texttt{tParameters.cInputDomain = } \emph{cells composed by vectors; each vector contains the input locations of its corresponding dimensionality}
+	%
+\end{itemize}
+
+
+% ---------------------------------------------------------------------
+\subsection{Specification of the measure}
+\label{ssec:measure}
+
+To specify the measure $\mu \left( \mathcal{X} \right)$ for the extraction of the samples, set the following:
+%
+\begin{itemize}
+	%
+	\item \texttt{tParameters.strMeasureKind =} either \emph{'exponential'}, or \emph{'gaussian'} or \emph{'uniform'}
+	%
+	\item \texttt{tParameters.cExponentialMeasureParameters =} \emph{needed only if exponential measures are selected. Cells of bidimensional vectors [weight, decay]. The number of cells must be equal to the dimensionality of the domain. Each cell refers to the corresponding dimension}
+	%
+	\item \texttt{tParameters.cGaussianMeasureParameters =} \emph{needed only if Gaussian measures are selected. Cells of tridimensional vectors [weight, mean, variance]. The number of cells must be equal to the dimensionality of the domain. Each cell refers to the corresponding dimension}
+	%
+\end{itemize}
+
+
+
+% ---------------------------------------------------------------------
+\subsection{Specification of the kernel}
+\label{ssec:kernel}
+
+\begin{itemize}
+	%
+	\item \texttt{tParameters.strKernelKind =} one of these choices \emph{[ 'gaussian' | 'stablespline' | 'cubicspline' | 'laplacian' ]}
+	%
+	\item \texttt{tParameters.fGaussianKernelVariance =} \emph{scalar positive value. Needed only if Gaussian kernels are selected}
+	%
+	\item \texttt{tParameters.fLaplacianKernelScale =} \emph{scalar positive value. Needed only if Laplacian kernels are selected}
+	%
+	\item \texttt{tParameters.fStableSplineKernelExponentialDecay =} \emph{scalar positive value. Needed only if stable splines kernels are selected}
+	%
+	\item \texttt{tParameters.bCompute2DKernels =} \emph{[false | true]; skip the computation of 2D kernels if true (due to computational and memory constraints)}
+	%
+	\item \texttt{tParameters.bCompute3DKernels =} \emph{[false | true]; skip the computation of 3D kernels if true (due to computational and memory constraints)}
+	%
+\end{itemize}
+
+
+
+% ---------------------------------------------------------------------
+\subsection{Specification of the accuracy of the decomposition}
+\label{ssec:accuracy}
+
+\begin{itemize}
+	%
+	\item \texttt{tParameters.fPercentageOfVarianceToBeCaptured =} \emph{scalar value in [0,1). Determines how many eigenfunctions will be computed.}
+	%
+	\item \texttt{tParameters.iMinimalNumberOfEigenfunctionsToBeSaved =} \emph{positive integer. Possibly overrides the previous setting}
+	%
+\end{itemize}
+
+
+% ---------------------------------------------------------------------
+\subsection{Specification of the outputs}
+\label{ssec:outputs}
+
+\begin{itemize}
+	%
+	\item \texttt{tParameters.iNumberOfSamplesPerDimensionWhenExportingTxtFiles =} \item{integer value, the higher its value the better the accuracy of the .txt files that will be exported}
+	%
+	\item \texttt{tParameters.bPrintDebugInformation =} \emph{[true | false], if one desires the output to be shown in the command window}
+	%
+	\item \texttt{tParameters.bPlotDebugInformation =} \emph{[true | false], if one desires to see figures about the computations}
+	%
+	\item \texttt{tParameters.bSaveResultingFiles =} \emph{[true | false], if one wants to save the computed results}
+	%
+	\item \texttt{tParameters.bEnableMailAlert =} \emph{[true | false], if one wants to receive an email stating that computations are finished}
+	%
+	\item \texttt{tParameters.strEMailAddress =} \emph{list of email addresses}
+	%
+	\item \texttt{tParameters.strSmtpServer =} \emph{SMTP server's addres}
+	%
+	\item \texttt{tParameters.bSendFiguresViaMail =} \emph{[true | false], if with the email one wants to receive also the resulting figures as an attachment}
+	%
+	\item \texttt{tParameters.bSendMatFilesViaMail =} \emph{[true | false], if with the email one wants to receive also the resulting .mat files as an attachment}
+	%
+\end{itemize}
+
+
+
+\section{Detailed description of the outputs}
+\label{sec:outputs}
+
+\begin{itemize}
+	%
+	\item .txt files containing the tabulated eigenfunctions (1 file per eigenfunction);
+	%
+	\item .txt files containing the eigenvalues;
+	%
+	\item .txt files containing the measure;
+	%
+	\item .txt files containing some examples of realizations obtained from the considered kernel;
+	%
+	\item .mat file containing the structure \texttt{tKernelParameters} with fields:
+		%
+		\begin{itemize}
+			%
+			\item \texttt{strKernelKind}
+			\item \texttt{strMeasureKind}
+			\item \texttt{afEigenvalues}
+			\item \texttt{tHyperparameters}
+			%
+		\end{itemize}
+		%
+		Only for 1D kernels it contains also
+		%
+		\begin{itemize}
+			\item \texttt{afDomain}
+			\item \texttt{afMeasure}
+			\item \texttt{aafEigenfunctions}
+			\item \texttt{aafKernel}
+		\end{itemize}
+		%
+		Only for 2D kernels it contains also
+		%
+		\begin{itemize}
+			\item \texttt{aafDomain}
+			\item \texttt{aafMeasure}
+			\item \texttt{aaafEigenfunctions}
+			\item \texttt{aaaafKernel}
+		\end{itemize}
+	%
+\end{itemize}
+
+Note: all the .txt files are optimized in order to be plotted using the \LaTeX\ pgfplots package.
+
+\section{Example of usage}
+\label{sec:example_of_usage}
+
+\begin{enumerate}
+	%
+	\item change the current directory to \texttt{./MainSoftware/}
+	%
+	\item edit \texttt{LoadParameters.m} (see the .m file for examples)
+	%
+	\item run \texttt{main.m}
+	%
+\end{enumerate}
+
+
+\section{Contacts}
+\label{sec:contacts}
+
+For comments, suggestions, indications and bugs reporting please contact \texttt{damiano.varagnolo@dei.unipd.it}.
+
+
+
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ %
+%																	%
+%\addcontentsline	{toc}{section}{References}						%
+%\bibliographystyle	{../Bibliography/ieeetransactions}				%
+%\bibliographystyle	{chicago}										%
+%\bibliography		{../Bibliography/bibliography}					%
+%																	%
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ %
+
+\end{document}

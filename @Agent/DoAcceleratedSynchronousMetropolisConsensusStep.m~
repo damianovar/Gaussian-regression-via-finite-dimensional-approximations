@@ -1,0 +1,74 @@
+% algorithm:
+%
+% - form a matrix of Y's and of Ypast's (each vector of each node is a row)
+% - do Y+ = (P - eps) Y + eps Ypast
+% - put the various rows of the Y+ back
+%
+%
+% NOTE: the accelerated consensus gain used is the one of the sender
+%
+function DoAcceleratedSynchronousMetropolisConsensusStep(	tSender,				...
+															atReceivers,			...
+															aafMetropolisWeights	)
+	%
+% 	disp(tSender.afConsensusVector + atReceivers(1).afConsensusVector)
+% 	disp(tSender.afAuxiliaryConsensusVectorA + atReceivers(1).afAuxiliaryConsensusVectorA)
+	%
+	% DEBUG
+	fPreviousSum			= Network.ConsensusNode.GetConsensusVectorsSum( [tSender, atReceivers] );
+	fPreviousAuxiliarySum	= Network.ConsensusNode.GetAuxiliaryConsensusVectorsSum( [tSender, atReceivers] );
+	%
+	%
+	% storage allocation
+	aafY = zeros( numel(atReceivers) + 1, tSender.iNumberOfElements );
+	%
+	%
+	% --------------------------------------------------------------------------
+	% computation of Y, Ypast and save the previous values
+	aafY( 1, : )						= tSender.afConsensusVector';
+	aafPastY( 1, : )					= tSender.afAuxiliaryConsensusVectorA';
+	tSender.afAuxiliaryConsensusVectorA	= tSender.afConsensusVector;
+	%
+	for iReceiver = 1:numel( atReceivers )
+		%
+		aafY( iReceiver + 1, : )								= atReceivers( iReceiver ).afConsensusVector';
+		aafPastY( iReceiver + 1, : )							= atReceivers( iReceiver ).afAuxiliaryConsensusVectorA';
+		atReceivers( iReceiver ).afAuxiliaryConsensusVectorA	= atReceivers( iReceiver ).afConsensusVector;
+		%
+	end;%
+	%
+	%
+	% --------------------------------------------------------------------------
+	% computation of Y+
+	%
+	% consensus
+	aafY = aafMetropolisWeights * aafY;
+	%
+	% memory
+	aafY =		(     tSender.fAcceleratedGossipWeight ) * aafY		...
+			+	( 1 - tSender.fAcceleratedGossipWeight ) * aafPastY;
+	%
+	%
+	% --------------------------------------------------------------------------
+	% put the rows of Y+ back
+	tSender.afConsensusVector = aafY( 1, : )';
+	%
+	for iReceiver = 1:numel( atReceivers )
+		%
+		atReceivers( iReceiver ).afConsensusVector = aafY( iReceiver + 1, : )';
+		%
+	end;%
+	%
+	%
+% 	disp(tSender.afConsensusVector + atReceivers(1).afConsensusVector)
+% 	disp(tSender.afAuxiliaryConsensusVectorA + atReceivers(1).afAuxiliaryConsensusVectorA)
+	%
+	% DEBUG
+% 	fCurrentSum = Network.ConsensusNode.GetConsensusVectorsSum( [tSender, atReceivers] );
+% 		fprintf('| prev. - curr. | / | curr. | = %.20f\n', abs(fCurrentSum - fPreviousSum) / abs(fCurrentSum) );
+% 	if( abs(fCurrentSum - fPreviousSum) / abs(fCurrentSum) > 0.00000000001 )
+% 		fprintf('| prev. - curr. | / | curr. | = %.20f\n', abs(fCurrentSum - fPreviousSum) / abs(fCurrentSum) );
+% 		error('sums are not being preserved');
+% 	end;%
+	%
+end %

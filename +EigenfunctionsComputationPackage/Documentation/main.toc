@@ -1,0 +1,15 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}License terms}{1}{section.1}
+\contentsline {section}{\numberline {2}Objective}{1}{section.2}
+\contentsline {section}{\numberline {3}Technical requirements}{1}{section.3}
+\contentsline {section}{\numberline {4}Installation}{2}{section.4}
+\contentsline {section}{\numberline {5}Detailed description of the input parameters}{2}{section.5}
+\contentsline {subsection}{\numberline {5.1}Specification of the filepaths}{2}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Specification of the input domain}{2}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Specification of the measure}{2}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Specification of the kernel}{2}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.5}Specification of the accuracy of the decomposition}{3}{subsection.5.5}
+\contentsline {subsection}{\numberline {5.6}Specification of the outputs}{3}{subsection.5.6}
+\contentsline {section}{\numberline {6}Detailed description of the outputs}{3}{section.6}
+\contentsline {section}{\numberline {7}Example of usage}{4}{section.7}
+\contentsline {section}{\numberline {8}Contacts}{4}{section.8}
